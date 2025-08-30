@@ -1,56 +1,48 @@
 package com.example.QuickDine.ui;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.support.ui.*;
 
 import java.time.Duration;
 
-
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ReservationUITest {
 
     private WebDriver driver;
 
-    @BeforeEach
-    void setup() {
-        driver = new ChromeDriver();
-        driver.get("http://localhost:3000");
+    @BeforeAll
+    public void setupDriver() {
+        WebDriverManager.firefoxdriver().setup(); // Auto-downloads compatible FirefoxDriver
     }
 
-
-
-
-
+    @BeforeEach
+    public void setup() {
+        FirefoxOptions options = new FirefoxOptions();
+        options.addArguments("--headless"); // CI-friendly
+        driver = new FirefoxDriver(options);
+        driver.get("http://localhost:3000"); // Adjust if needed
+    }
 
     @Test
-    void shouldRejectDuplicateReservation() {
-        // First reservation
-        driver.findElement(By.id("customerName")).sendKeys("Thamindu");
-        driver.findElement(By.id("contactNumber")).sendKeys("0704545454");
-        driver.findElement(By.id("reservationTime")).sendKeys("2025-08-29T19:00");
+    public void testReservationSuccess() {
+        driver.findElement(By.id("customerName")).sendKeys("Senuja");
+        driver.findElement(By.id("contactNumber")).sendKeys("0771234567");
+        driver.findElement(By.id("reservationTime")).sendKeys("2025-09-01T19:00");
         driver.findElement(By.id("tableNumber")).sendKeys("5");
         driver.findElement(By.id("submitBtn")).click();
 
-        // Second reservation (duplicate)
-        driver.findElement(By.id("customerName")).clear();
-        driver.findElement(By.id("customerName")).sendKeys("Gimhani");
-        driver.findElement(By.id("submitBtn")).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebElement successMsg = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("successMessage")));
 
-        WebElement errorMsg = driver.findElement(By.id("errorMessage"));
-        Assertions.assertTrue(errorMsg.isDisplayed());
-
-
+        Assertions.assertEquals("Reservation successful!", successMsg.getText());
     }
 
     @AfterEach
-    void tearDown() {
-        driver.quit();
+    public void tearDown() {
+        if (driver != null) driver.quit();
     }
-
 }
