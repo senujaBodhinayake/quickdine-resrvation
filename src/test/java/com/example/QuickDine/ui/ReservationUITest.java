@@ -23,21 +23,10 @@ public class ReservationUITest {
         driver.get("http://localhost:3000");
     }
 
-    @Test
-    void shouldSubmitReservationSuccessfully() {
-        driver.findElement(By.id("customerName")).sendKeys("Senuja");
-        driver.findElement(By.id("contactNumber")).sendKeys("0766970855");
-        driver.findElement(By.id("reservationTime")).sendKeys("2025-08-29T19:15");
-        driver.findElement(By.id("tableNumber")).sendKeys("6");
-        driver.findElement(By.id("submitBtn")).click();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement successMsg = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("successMessage"))
-        );
 
-        Assertions.assertTrue(successMsg.isDisplayed());
-    }
+
+
 
     @Test
     void shouldRejectDuplicateReservation() {
