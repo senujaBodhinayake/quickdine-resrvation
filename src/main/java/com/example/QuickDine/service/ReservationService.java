@@ -14,7 +14,7 @@ public class ReservationService {
     public Reservation save(Reservation reservation){
         boolean isTableTaken = reservationRepository.existsByTableNumberAndReservationTime(
                 reservation.getTableNumber(),
-                reservation.getReservationTime()
+               reservation.getReservationTime()
         );
 
         if (isTableTaken){
