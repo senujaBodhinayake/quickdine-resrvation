@@ -1,7 +1,9 @@
 package com.example.QuickDine;
 
 import com.example.QuickDine.model.Reservation;
+import com.example.QuickDine.repository.ReservationRepository;
 import com.example.QuickDine.service.ReservationService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +20,13 @@ public class ReservationServiceTest {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private ReservationRepository reservationRepository;
+
+    @BeforeEach
+    public void resetDatabase() {
+        reservationRepository.deleteAll(); // or use a test-specific DB
+    }
     @Test
     void shouldReservationSuccessfully(){
         Reservation reservation = Reservation.builder()
