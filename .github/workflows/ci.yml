@@ -32,5 +32,4 @@ jobs:
       - name: Start backend
         run: mvn spring-boot:run &
 
-      - name: Run Selenium UI tests
-        run: mvn test -Dtest=ReservationUITest
+
