@@ -26,7 +26,10 @@ jobs:
         run: mvn clean install -DskipTests
 
       - name: Run unit tests
-        run: mvn test -Dtest=!ReservationUITest
+        run: mvn test
+
+      - name: Start backend
+        run: mvn spring-boot:run &
 
       - name: Run Selenium UI tests
         run: mvn test -Dtest=ReservationUITest
