@@ -33,6 +33,10 @@ public class ReservationUITest {
     @BeforeEach
     public void startBrowser() {
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+
 //        options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
 
         driver = new ChromeDriver(options);
